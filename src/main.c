@@ -1,15 +1,9 @@
-#include "vula.h"
+#include "io.h"
 
 
 
 void _entry(){
-    UNICODE_STRING string;
-    RtlInitUnicodeString(&string, L"Vula Build INDEV");
-
-
-
-    NtDisplayString(&string);
-
+    VlPuts(L"Hello!");
     while(1){continue;}
-
 }
+
