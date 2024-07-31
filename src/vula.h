@@ -20,8 +20,8 @@
 //    ░▒▓██▓▒░   ░▒▓██████▓▒░░▒▓████████▓▒░▒▓█▓▒░░▒▓█▓▒░ 
 // 
 //
-// Contributed by zvqle and 5g
-                                                      
+// Contributed by zvqle
+                                             
 
 
 
