@@ -1,7 +1,6 @@
 #include "vlcrt.h"
 #include "vula.h"
-#include <minwindef.h>
-
+#include <winnt.h>
 
 
 
@@ -334,7 +333,7 @@ static inline USHORT VlReadKeyPress(HANDLE kHandle, HANDLE kEvent){
     else return 0;
 } 
 
-void VlGets(){
+WCHAR VlGetKey(){
     static USHORT prevkey;
     static HANDLE kHandle;
     static HANDLE kEvent;
@@ -345,13 +344,37 @@ void VlGets(){
         init = TRUE;
     }
     USHORT key = VlReadKeyPress(kHandle, kEvent);
-    VlSleep(75);
-    if(prevkey == key){
-        return;
+    NTSTATUS waitStatus = NtWaitForSingleObject(kHandle, TRUE, NULL);
+    if(!NT_SUCCESS(waitStatus)){
+        VlPrintStatus(L"NtWaitForSingleObject", waitStatus);
+        return L' ';
+    }
+    if (key == prevkey) {
+        return VlGetKey();
     }
     prevkey = key;
     WCHAR character = VlCodeToChar(key);
-    PWCHAR string = VlCharToString(character);
-    VlPuts(string);
-    VlFree(string, 2 * sizeof(WCHAR));
+    return character;
+}
+
+
+
+
+WCHAR* VlGets(WCHAR* prompt){
+    VlPuts(prompt);
+    VlPuts(L": ");
+    WCHAR* chararray = (WCHAR*)VlAlloc(512 * sizeof(WCHAR));
+    int i = 0;
+    while(i < 511){
+        WCHAR character = VlGetKey();
+        if(character == L'\n'){
+            break;
+        }
+        chararray[i] = character;
+        VlPuts(&chararray[i]);
+        i++;
+    }
+    chararray[i - 1] = L'\0';
+    VlPuts(L"\n");
+    return chararray;
 }
