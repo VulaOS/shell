@@ -1,5 +1,6 @@
 #include "vlcrt.h"
 #include "vula.h"
+#include <vcruntime.h>
 #include <winnt.h>
 
 
@@ -290,7 +291,7 @@ static inline NTSTATUS VlOpenKeyboardDevice(PHANDLE kHandle){
     return status;
 }
 
-NTSTATUS VlCreateKeyboardEvent(PHANDLE kEvent){
+static inline NTSTATUS VlCreateKeyboardEvent(PHANDLE kEvent){
     static BOOL init = FALSE;
     OBJECT_ATTRIBUTES oAttributes;
     InitializeObjectAttributes(&oAttributes, NULL, 0, NULL, NULL);
@@ -360,21 +361,42 @@ WCHAR VlGetKey(){
 
 
 
-WCHAR* VlGets(WCHAR* prompt){
+WCHAR* VlGets(WCHAR* prompt, size_t size) {
     VlPuts(prompt);
     VlPuts(L": ");
-    WCHAR* chararray = (WCHAR*)VlAlloc(512 * sizeof(WCHAR));
+    
+    WCHAR* chararray = VlAlloc(size * sizeof(WCHAR));
+    for (int j = 0; j < size; j++) {
+        chararray[j] = L'\0';  
+    }
+
     int i = 0;
-    while(i < 511){
+    while (i < (size - 1)) {
         WCHAR character = VlGetKey();
-        if(character == L'\n'){
+        if (character == L'\n') {
+            chararray[i] = L'\0'; 
+            VlPuts(L"\n");
             break;
         }
         chararray[i] = character;
-        VlPuts(&chararray[i]);
+
+        WCHAR* temp = VlAlloc(2 * sizeof(WCHAR)); 
+        temp[0] = character;
+        temp[1] = L'\0'; 
+        VlPuts(temp);    
+        VlFree(temp, 2 * sizeof(WCHAR));
         i++;
     }
-    chararray[i - 1] = L'\0';
-    VlPuts(L"\n");
+
+    if (i == (size - 1)) {
+        chararray[size - 1] = L'\0';
+    }
+
     return chararray;
+}
+
+
+BOOL VlFreeString(WCHAR* string, size_t size){
+    BOOL result = VlFree(string, size * sizeof(WCHAR));
+    return result;
 }

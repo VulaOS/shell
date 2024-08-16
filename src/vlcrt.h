@@ -17,8 +17,9 @@ WCHAR* Vlitow(int num, WCHAR* str);
 WCHAR* VlStatusToString(NTSTATUS status, WCHAR* str);
 WCHAR* VlCharToString(WCHAR character);
 WCHAR VlGetKey();
-WCHAR* VlGets(WCHAR* prompt);
-NTSTATUS VlCreateKeyboardEvent(PHANDLE kEvent);
+WCHAR* VlGets(WCHAR* prompt, size_t size);
+BOOL VlFreeString(WCHAR* string, size_t size);
+
 
 
 
