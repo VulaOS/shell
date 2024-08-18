@@ -1,5 +1,6 @@
 #include "vlcrt.h"
 #include "vula.h"
+#include <minwindef.h>
 #include <vcruntime.h>
 #include <winnt.h>
 
@@ -393,6 +394,48 @@ WCHAR* VlGets(WCHAR* prompt, size_t size) {
     }
 
     return chararray;
+}
+
+
+
+
+void VlStrTok(WCHAR** firststring, size_t firststringsize, WCHAR** secondstring, size_t secondstringsize, WCHAR delimiter, WCHAR* sourcestring) {
+    *firststring = (WCHAR*)VlAlloc(firststringsize * sizeof(WCHAR));
+    *secondstring = (WCHAR*)VlAlloc(secondstringsize * sizeof(WCHAR));
+
+    for (int j = 0; j < firststringsize; j++) {
+        (*firststring)[j] = L'\0';  
+    }
+    for (int j = 0; j < secondstringsize; j++) {
+        (*secondstring)[j] = L'\0';  
+    }
+
+    int i = 0;
+    int firstIndex = 0;
+    int secondIndex = 0;
+    BOOL switcher = FALSE;
+
+    while (sourcestring[i] != L'\0') {
+        if(switcher == FALSE){
+            if (sourcestring[i] == delimiter) {
+                switcher = TRUE;
+                i++;  
+                continue;
+            }
+            else if (firstIndex < firststringsize - 1) {
+                (*firststring)[firstIndex++] = sourcestring[i];
+            }
+        }
+        else {
+            if (secondIndex < secondstringsize - 1) {
+                (*secondstring)[secondIndex++] = sourcestring[i];
+            }
+        }
+
+        i++;
+    }
+    (*firststring)[firststringsize - 1] = L'\0';
+    (*secondstring)[secondstringsize - 1] = L'\0';
 }
 
 
