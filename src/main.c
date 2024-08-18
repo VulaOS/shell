@@ -18,7 +18,7 @@ void VlEntry() {
         WCHAR* first;
         WCHAR* second;
         WCHAR* input = VlGets(L"Type Strings So It Can Be Parsed", 1024);
-        VlStrTok(&first, 512,& second, 512, L' ', input);
+        VlStrTok(&first, 512,&second, 512, L' ', input);
         VlPuts(first);
         VlPuts(L" --- ");
         VlPuts(second);
