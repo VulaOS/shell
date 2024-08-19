@@ -1,27 +1,11 @@
-#ifndef VULA_H_INCLUDED
-#define VULA_H_INCLUDED
-
+#ifndef VLALIB_H_INCLUDED
+#define VLALIB_H_INCLUDED
 
 
 #define _AMD64_
-
 #include <minwindef.h>
 #include <winternl.h>
 
-
-
-
-// ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░       ░▒▓██████▓▒░  
-// ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░ 
-//  ░▒▓█▓▒▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░ 
-//  ░▒▓█▓▒▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓████████▓▒░ 
-//   ░▒▓█▓▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░ 
-//   ░▒▓█▓▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░ 
-//    ░▒▓██▓▒░   ░▒▓██████▓▒░░▒▓████████▓▒░▒▓█▓▒░░▒▓█▓▒░ 
-// 
-//
-// Contributed by zvqle
-                                             
 
 typedef enum _EVENT_TYPE
 {
@@ -81,6 +65,19 @@ extern NTSTATUS NTAPI NtWaitForSingleObject(HANDLE, BOOLEAN, PLARGE_INTEGER);
 #define NtCurrentProcess() ((HANDLE)(LONG_PTR)-1)
 #define EVENT_QUERY_STATE 0x0001
 
+#define VLSTRINGSIZE 512 * sizeof(WCHAR)
+
+void VlPuts(PCWSTR string);
+void* VlAlloc(size_t size);
+BOOL VlFree(void* address, size_t size);
+NTSTATUS VlSleep(int milliseconds);
+WCHAR* Vlitow(int num, WCHAR* str);
+WCHAR* VlStatusToString(NTSTATUS status, WCHAR* str);
+WCHAR* VlCharToString(WCHAR character);
+WCHAR VlGetKey();
+WCHAR* VlGets(WCHAR* prompt, size_t size);
+BOOL VlFreeString(WCHAR* string, size_t size);
+void VlStrTok(WCHAR** firststring, size_t firststringsize, WCHAR** secondstring, size_t secondstringsize, WCHAR delimiter, WCHAR* sourcestring);
 
 
 #endif

@@ -4,7 +4,7 @@
 
 
 cl /c src/*.c
-link *.obj ntdll.lib /subsystem:native /entry:VlEntry /out:vula.exe
+link *.obj ntdll.lib lib/vlalib.lib /subsystem:native /entry:VlEntry /out:vula.exe
 del *.obj
 
 echo compilation finished 
