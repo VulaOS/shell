@@ -1,0 +1,4 @@
+all:
+	cl /c src/*.c
+	link *.obj ntdll.lib lib/vlalib.lib /subsystem:native /entry:VlEntry /out:shell.exe
+	del *.obj
