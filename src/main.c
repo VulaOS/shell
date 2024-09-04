@@ -1,4 +1,5 @@
-#include "vlalib.h"
+#include "cmdparser.h"
+#include "shell.h"
 
 
 
@@ -9,23 +10,22 @@
 
 
 void VlEntry() {
-    VlPuts(L"VulaOS Build INDEV (0.0.3)\n\n");
-    VlPuts(L"String Parsing Test\n\n");
+    VlPuts(L"VulaOS Build INDEV (0.0.4)\n\n");
+    VlPuts(L"Shell Test\n");
+    VlPuts(L"Type Help for List of Commands\n\n");
+
     
+    data data;
     
     while (1) {
         VlSleep(9);
-        WCHAR* first;
-        WCHAR* second;
-        WCHAR* input = VlGets(L"Type Strings So It Can Be Parsed", 1024);
-        VlStrTok(&first, 512,&second, 512, L' ', input);
-        VlPuts(first);
-        VlPuts(L" --- ");
-        VlPuts(second);
-        VlPuts(L"\n");
+        
+        WCHAR* input = VlGets(L"->", 1024);
+        VlStrTok(&data.cmd, 512,&data.arg, 512, L' ', input);
+        matcher(&data);
         VlFreeString(input, 1024);
-        VlFreeString(first, 512);
-        VlFreeString(second, 512);
+        VlFreeString(data.cmd, 512);
+        VlFreeString(data.arg, 512);
     }
 }
 
