@@ -27,7 +27,17 @@ typedef struct _data{
     WCHAR* arg;
 } data;
 
-extern LONG NTAPI RtlCompareUnicodeString(PUNICODE_STRING ,PUNICODE_STRING ,BOOLEAN);
+extern LONG NTAPI RtlCompareUnicodeString(PUNICODE_STRING,
+    PUNICODE_STRING,
+    BOOLEAN
+);
+extern ULONG NTAPI RtlGetCurrentDirectory_U(
+    ULONG,
+    _Out_writes_bytes_(BufferLength) PWSTR 
+);
+extern NTSTATUS NTAPI RtlSetCurrentDirectory_U(
+    PUNICODE_STRING
+);
 
 
 #endif

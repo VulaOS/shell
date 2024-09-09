@@ -3,7 +3,7 @@
 #include "vlalib.h"
 #include "cmdexecute.h"
 
-WCHAR* cmds[] = {L"echo", L"help"};
+WCHAR* cmds[] = {L"echo", L"help", L"cd", L"changel", L"fcreate", L"fread"};
 
 static inline LONG compare_string(WCHAR* cmd, WCHAR* cmds){
     UNICODE_STRING cmdstring;
